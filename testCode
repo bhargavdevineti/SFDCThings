@@ -1,0 +1,36 @@
+/**
+ * @Author		:		bhargav devineti
+ * @Date		:		May-10-2020
+ * */
+public class getDetailsOnLoad {
+    
+    public class getDetailsOnLoadWrapper {
+        @AuraEnabled
+        public List<Contact> getContacts;
+        @AuraEnabled 
+        public List<Account> getAccounts;   
+        @AuraEnabled 
+        public string getUserId;  
+    }
+    
+    @AuraEnabled(cacheable=true)
+    public static getDetailsOnLoadWrapper getDetailsOnLoadMethod(){
+        //declaring wrapper class
+        getDetailsOnLoadWrapper onLoadWrapper = new getDetailsOnLoadWrapper();
+        
+        List<Contact> conList = [select id,name from contact limit 2];
+        //Adding Contacts list to wrapper class        
+        onLoadWrapper.getContacts = conList;
+        
+        List<Account> acctList = [select id,name from Account limit 2];  
+        //Adding Accounts list to wrapper class
+        onLoadWrapper.getAccounts = acctList; 
+        
+        string userId = UserInfo.getUserId();
+         //Added user id to wrapper class
+        onLoadWrapper.getUserId = userId;
+        
+        return onLoadWrapper;
+    }
+    
+}
